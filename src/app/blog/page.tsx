@@ -1,6 +1,16 @@
+import type { Metadata } from "next";
 import { BlogGrid } from "@/components/sections/BlogGrid";
 import { Section } from "@/components/layout/Section";
 import { Button } from "@/components/ui/button";
+
+export const metadata: Metadata = {
+    title: "Resource Center & Blog | QuickBooks",
+    description: "Expert advice, tutorials, and insights to help your small business grow. Tax tips, cash flow management, AI in accounting, and more.",
+    openGraph: {
+        title: "QuickBooks Resource Center",
+        description: "Business tips, tutorials, and expert insights for small business owners.",
+    },
+};
 
 export default function BlogPage() {
     const posts = [

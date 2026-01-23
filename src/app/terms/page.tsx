@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { Section } from "@/components/layout/Section";
+
+export const metadata: Metadata = {
+    title: "Terms & Conditions | QuickBooks",
+    description: "Read QuickBooks Terms of Service. Understand your rights and responsibilities when using our accounting software.",
+};
 
 export default function TermsPage() {
     return (

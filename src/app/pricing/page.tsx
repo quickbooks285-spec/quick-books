@@ -1,7 +1,17 @@
+import type { Metadata } from "next";
 import { Pricing } from "@/components/sections/Pricing";
 import { PricingComparison } from "@/components/sections/PricingComparison";
 import { FAQ } from "@/components/sections/FAQ";
 import { Section } from "@/components/layout/Section";
+
+export const metadata: Metadata = {
+    title: "Pricing & Plans | QuickBooks Accounting Software",
+    description: "Choose the right QuickBooks plan for your business. Compare Simple Start, Essentials, Plus, and Advanced plans. Start your free 30-day trial today.",
+    openGraph: {
+        title: "QuickBooks Pricing - Find Your Perfect Plan",
+        description: "Compare QuickBooks plans and pricing. From $24/month with annual billing.",
+    },
+};
 
 export default function PricingPage() {
     const tiers = [

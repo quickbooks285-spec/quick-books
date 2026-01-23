@@ -1,8 +1,18 @@
+import type { Metadata } from "next";
 import { Mission } from "@/components/sections/Mission";
 import { Team } from "@/components/sections/Team";
 import { Features } from "@/components/sections/Features";
 import { Section } from "@/components/layout/Section";
 import { Heart, Users, Target, Zap, Shield, Globe } from "lucide-react";
+
+export const metadata: Metadata = {
+    title: "About Us | QuickBooks Company & Mission",
+    description: "Learn about QuickBooks' mission to power prosperity around the world. Meet our leadership team and discover our core values.",
+    openGraph: {
+        title: "About QuickBooks - Powering Prosperity",
+        description: "Empowering businesses to prosper with smart accounting solutions.",
+    },
+};
 
 export default function AboutPage() {
     const values = [

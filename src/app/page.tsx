@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
 import { Features } from "@/components/sections/Features";
 import { Testimonials } from "@/components/sections/Testimonials";
@@ -5,6 +6,17 @@ import { Section } from "@/components/layout/Section";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight, BarChart3, Clock, Globe, ShieldCheck, Zap, Smartphone } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "QuickBooks | Smart Accounting Software for Small Business",
+  description: "QuickBooks helps small businesses track expenses, create invoices, manage bills, and run financial reports. Start your 30-day free trial today.",
+  keywords: ["accounting software", "small business", "invoicing", "expense tracking", "QuickBooks"],
+  openGraph: {
+    title: "QuickBooks | Smart Accounting Software",
+    description: "Track expenses, customize invoices, run reports and even more, all from one place.",
+    type: "website",
+  },
+};
 
 export default function Home() {
   const features = [

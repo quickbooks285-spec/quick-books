@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { Section } from "@/components/layout/Section";
+
+export const metadata: Metadata = {
+    title: "Privacy Policy | QuickBooks",
+    description: "Learn how QuickBooks collects, uses, and protects your personal information. Read our full privacy policy.",
+};
 
 export default function PrivacyPage() {
     return (
