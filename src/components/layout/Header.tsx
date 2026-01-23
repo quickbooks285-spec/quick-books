@@ -101,7 +101,7 @@ export function Header() {
               <SheetHeader>
                 <SheetTitle className="text-left font-bold text-xl">QuickBooks</SheetTitle>
               </SheetHeader>
-              <div className="flex flex-col gap-4 mt-8">
+              <div className="flex flex-col gap-4 mt-8 pl-4">
                 {navItems.map((item) => (
                   <Link
                     key={item.name}
