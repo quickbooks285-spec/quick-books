@@ -8,18 +8,10 @@ export function Footer() {
     const currentYear = new Date().getFullYear();
 
     const footerLinks = {
-        Products: [
-            { name: 'QuickBooks Online', href: '#' },
-            { name: 'QuickBooks Payroll', href: '#' },
-            { name: 'QuickBooks Time', href: '#' },
-            { name: 'QuickBooks Live', href: '#' },
-            { name: 'QuickBooks Solopreneur', href: '#' },
-        ],
         Company: [
             { name: 'About Us', href: '/about' },
             { name: 'Careers', href: '/about#careers' },
             { name: 'Press & Media', href: '#' },
-            { name: 'Affiliates', href: '#' },
             { name: 'Contact', href: '/contact' },
         ],
         Resources: [
@@ -27,17 +19,17 @@ export function Footer() {
             { name: 'Support', href: '#' },
             { name: 'Community', href: '#' },
             { name: 'Resource Center', href: '#' },
-            { name: 'Developer Docs', href: '#' },
         ],
         Legal: [
             { name: 'Privacy Policy', href: '/privacy' },
             { name: 'Terms of Service', href: '/terms' },
             { name: 'Security', href: '#' },
+            { name: 'Cookies', href: '#' },
         ],
     };
 
     return (
-        <footer className="bg-zinc-950 border-t border-zinc-900 mt-auto text-zinc-300 transition-colors duration-300">
+        <footer className="bg-zinc-950 border-t border-zinc-900 mt-auto text-zinc-300">
             <div className="container mx-auto px-4 md:px-6 pt-16 pb-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
                     {/* Brand & Newsletter */}
@@ -72,7 +64,7 @@ export function Footer() {
                         </div>
                     </div>
 
-                    {/* Links Columns */}
+                    {/* Links Columns - Company, Resources, Legal all in one row */}
                     {Object.entries(footerLinks).map(([category, links]) => (
                         <div key={category} className="space-y-4">
                             <h3 className="font-semibold text-white">{category}</h3>
