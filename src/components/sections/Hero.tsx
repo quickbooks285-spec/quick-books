@@ -31,7 +31,7 @@ export function Hero({
             <div className="container mx-auto px-4 md:px-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     {/* Left Column: Text & CTA */}
-                    <div className="space-y-8 text-left lg:pl-20">
+                    <div className="space-y-8 text-left">
                         <div className="space-y-4">
                             <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground leading-[1.1]">
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-green-600">
