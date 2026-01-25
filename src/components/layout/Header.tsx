@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { Menu, X } from 'lucide-react';
+import { Menu, ShoppingCart } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -22,10 +22,12 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
+import { useCart } from '@/context/CartContext';
 
 export function Header() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
+  const { totalItems, setIsCartOpen } = useCart();
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -37,7 +39,8 @@ export function Header() {
 
   const navItems = [
     { name: 'Home', href: '/' },
-    { name: 'Pricing', href: '/pricing' },
+    { name: 'Shop', href: '/shop' },
+
     { name: 'About', href: '/about' },
     { name: 'Blog', href: '/blog' },
     { name: 'Contact', href: '/contact' },
@@ -80,16 +83,49 @@ export function Header() {
 
         {/* CTA Buttons */}
         <div className="hidden md:flex items-center gap-4">
-          <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
-            Sign In
+          {/* Cart Button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="relative"
+            onClick={() => setIsCartOpen(true)}
+          >
+            <ShoppingCart className="h-5 w-5" />
+            {totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 h-5 w-5 bg-primary text-primary-foreground text-xs font-bold rounded-full flex items-center justify-center">
+                {totalItems}
+              </span>
+            )}
           </Button>
-          <Button size="lg" className="rounded-full px-6 shadow-md hover:shadow-lg transition-all bg-primary hover:bg-primary/90 text-primary-foreground">
-            Start Free Trial
-          </Button>
+          <Link href="/contact">
+            <Button variant="outline" className="rounded-full px-6 border-2 hover:bg-muted/50">
+              Talk to Sales
+            </Button>
+          </Link>
+          <Link href="/shop">
+            <Button size="lg" className="rounded-full px-6 shadow-md hover:shadow-lg transition-all bg-primary hover:bg-primary/90 text-primary-foreground">
+              Get License
+            </Button>
+          </Link>
         </div>
 
         {/* Mobile Menu */}
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center gap-2">
+          {/* Mobile Cart Button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="relative"
+            onClick={() => setIsCartOpen(true)}
+          >
+            <ShoppingCart className="h-5 w-5" />
+            {totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 h-5 w-5 bg-primary text-primary-foreground text-xs font-bold rounded-full flex items-center justify-center">
+                {totalItems}
+              </span>
+            )}
+          </Button>
+
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
@@ -113,12 +149,16 @@ export function Header() {
                   </Link>
                 ))}
                 <div className="h-px bg-border my-2" />
-                <Button variant="outline" className="w-full justify-start">
-                  Sign In
-                </Button>
-                <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-                  Start Free Trial
-                </Button>
+                <Link href="/contact" className="w-full" onClick={() => setIsOpen(false)}>
+                  <Button variant="outline" className="w-full">
+                    Talk to Sales
+                  </Button>
+                </Link>
+                <Link href="/shop" className="w-full" onClick={() => setIsOpen(false)}>
+                  <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+                    Get License
+                  </Button>
+                </Link>
               </div>
             </SheetContent>
           </Sheet>

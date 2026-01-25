@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
+import { ValueProps } from "@/components/sections/ValueProps";
 import { Features } from "@/components/sections/Features";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { Section } from "@/components/layout/Section";
@@ -80,6 +81,8 @@ export default function Home() {
     <>
       <Hero />
 
+      <ValueProps />
+
       <Features
         title="Everything you need to run your business"
         subtitle="Powerful tools to help you take control of your finances"
@@ -121,14 +124,14 @@ export default function Home() {
           <div className="relative z-10 max-w-2xl mx-auto space-y-8">
             <h2 className="text-3xl md:text-5xl font-bold">Ready to get started?</h2>
             <p className="text-lg md:text-xl text-primary-foreground/90">
-              Join millions of people who use QuickBooks to manage their accounting. Try it free for 30 days.
+              Join millions of people who use QuickBooks to manage their accounting. Get your license today.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" variant="secondary" className="h-14 px-8 text-lg rounded-full text-primary hover:bg-white">
-                <Link href="/signup">Start Free Trial</Link>
+                <Link href="/shop">Get License</Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="h-14 px-8 text-lg rounded-full bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10">
-                <Link href="/demo">Talk to Sales <ArrowRight className="ml-2 h-5 w-5" /></Link>
+                <Link href="/contact">Talk to Sales <ArrowRight className="ml-2 h-5 w-5" /></Link>
               </Button>
             </div>
           </div>
