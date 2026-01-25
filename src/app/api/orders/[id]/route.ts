@@ -4,13 +4,15 @@ import { supabase } from '@/lib/supabase';
 // GET /api/orders/[id] - Fetch a single order
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
+
         const { data, error } = await supabase
             .from('orders')
             .select('*')
-            .eq('id', params.id)
+            .eq('id', id)
             .single();
 
         if (error) {
@@ -32,15 +34,16 @@ export async function GET(
 // PATCH /api/orders/[id] - Update an order (mainly for status updates)
 export async function PATCH(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
         const body = await request.json();
 
         const { data, error } = await supabase
             .from('orders')
             .update(body)
-            .eq('id', params.id)
+            .eq('id', id)
             .select()
             .single();
 
