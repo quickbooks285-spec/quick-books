@@ -8,30 +8,26 @@ export function Footer() {
     const currentYear = new Date().getFullYear();
 
     const footerLinks = {
-        Company: [
-            { name: 'About Us', href: '/about' },
-            { name: 'Careers', href: '/about#careers' },
-            { name: 'Press & Media', href: '#' },
-            { name: 'Contact', href: '/contact' },
-        ],
-        Resources: [
+        Pages: [
+            { name: 'Home', href: '/' },
+            { name: 'Shop', href: '/shop' },
             { name: 'Blog', href: '/blog' },
-            { name: 'Support', href: '#' },
-            { name: 'Community', href: '#' },
-            { name: 'Resource Center', href: '#' },
+            { name: 'About Us', href: '/about' },
+            { name: 'Contact us', href: '/contact' },
         ],
-        Legal: [
+        Policies: [
+            { name: 'Cookies Policy', href: '/cookies' },
+            { name: 'Shipping Policy', href: '/shipping' },
+            { name: 'Refund Policy', href: '/refund' },
             { name: 'Privacy Policy', href: '/privacy' },
-            { name: 'Terms of Service', href: '/terms' },
-            { name: 'Security', href: '#' },
-            { name: 'Cookies', href: '#' },
+            { name: 'Terms & Conditions', href: '/terms' },
         ],
     };
 
     return (
         <footer className="bg-zinc-950 border-t border-zinc-900 mt-auto text-zinc-300">
             <div className="container mx-auto px-4 md:px-6 pt-16 pb-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                     {/* Brand & Newsletter */}
                     <div className="lg:col-span-2 space-y-6">
                         <Link href="/" className="inline-block">
