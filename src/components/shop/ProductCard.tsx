@@ -88,20 +88,32 @@ export function ProductCard({ product, className }: ProductCardProps) {
             {/* Image Container */}
             <div className="relative aspect-[4/3] overflow-hidden">
                 <Link href={`/shop/${product.id}`} className={cn(
-                    "block absolute inset-0 bg-gradient-to-br transition-transform duration-500 group-hover:scale-105",
-                    getCategoryGradient(product.category)
+                    "block absolute inset-0 transition-transform duration-500 group-hover:scale-105",
+                    product.image && product.image.startsWith('/images/')
+                        ? "bg-white"
+                        : `bg-gradient-to-br ${getCategoryGradient(product.category)}`
                 )}>
-                    {/* Category Icon */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <div className={cn(
-                            "text-6xl font-bold opacity-20",
-                            getCategoryAccent(product.category)
-                        )}>
-                            {product.category === 'Pro' && 'P'}
-                            {product.category === 'Premier' && 'Pr'}
-                            {product.category === 'Enterprise' && 'E'}
+                    {product.image && product.image.startsWith('/images/') ? (
+                        <img
+                            src={product.image}
+                            alt={product.name}
+                            className="absolute inset-0 w-full h-full object-contain p-4"
+                        />
+                    ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <div className={cn(
+                                "text-6xl font-bold opacity-20",
+                                getCategoryAccent(product.category)
+                            )}>
+                                {product.category === 'Pro' && 'P'}
+                                {product.category === 'Premier' && 'Pr'}
+                                {product.category === 'Enterprise' && 'E'}
+                                {product.category === 'Mac' && 'M'}
+                                {product.category === 'Accountant' && 'A'}
+                                {product.category === 'POS' && 'POS'}
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     {/* Gradient Overlay */}
                     <div className={cn(

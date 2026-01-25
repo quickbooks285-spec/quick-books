@@ -47,16 +47,27 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 <div className="grid md:grid-cols-2 gap-12 items-center">
                     {/* Product Image/Visual */}
                     <div className={cn(
-                        "relative aspect-square rounded-3xl overflow-hidden bg-gradient-to-br p-12",
+                        "relative aspect-square rounded-3xl overflow-hidden bg-gradient-to-br",
                         getCategoryGradient(product.category)
                     )}>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="text-9xl font-bold text-white/20">
-                                {product.category === 'Pro' && 'P'}
-                                {product.category === 'Premier' && 'Pr'}
-                                {product.category === 'Enterprise' && 'E'}
+                        {product.image && product.image.startsWith('/images/') ? (
+                            <img
+                                src={product.image}
+                                alt={product.name}
+                                className="absolute inset-0 w-full h-full object-contain p-4 bg-white"
+                            />
+                        ) : (
+                            <div className="absolute inset-0 flex items-center justify-center p-12">
+                                <div className="text-9xl font-bold text-white/20">
+                                    {product.category === 'Pro' && 'P'}
+                                    {product.category === 'Premier' && 'Pr'}
+                                    {product.category === 'Enterprise' && 'E'}
+                                    {product.category === 'Mac' && 'M'}
+                                    {product.category === 'Accountant' && 'A'}
+                                    {product.category === 'POS' && 'POS'}
+                                </div>
                             </div>
-                        </div>
+                        )}
                         {product.badge && (
                             <Badge className="absolute top-6 left-6 bg-white text-primary font-semibold shadow-xl text-base px-4 py-2">
                                 {product.badge}

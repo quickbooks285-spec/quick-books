@@ -391,7 +391,7 @@ Content included in Received File:
         description: 'QuickBooks Pro Plus 2024 with 5-user support - comprehensive accounting software for larger teams.',
         price: 289.99,
         originalPrice: 599.99,
-        image: '/images/products/pro-plus-2024-3users.png',
+        image: '/images/products/pro-plus-2024-5users.png',
         category: 'Pro',
         rating: 5.0,
         reviews: 5400,
