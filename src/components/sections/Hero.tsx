@@ -68,7 +68,7 @@ export function Hero({
                     </div>
 
                     {/* Right Column: Image */}
-                    <div className="relative mx-auto lg:ml-auto w-full max-w-[600px]">
+                    <div className="relative mx-auto lg:ml-auto w-full max-w-[600px] hidden lg:block">
                         <div className="relative aspect-[4/3] w-full">
                             <Image
                                 src="/images/hero-products.png"
