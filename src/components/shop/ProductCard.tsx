@@ -4,32 +4,11 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ShoppingCart, Heart, Star, Check } from 'lucide-react';
+import { ShoppingCart, Heart, Star, Check, CreditCard } from 'lucide-react';
 import { useState } from 'react';
 import { useCart } from '@/context/CartContext';
-
-export interface Product {
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    originalPrice?: number;
-    image: string;
-    category: string;
-    rating: number;
-    reviews: number;
-    badge?: string;
-    inStock: boolean;
-    features?: string[];
-    longDescription?: string;
-    systemRequirements?: string[];
-    overview?: string;
-    keyFeatures?: { title: string; description: string }[];
-    additionalFeatures?: string[];
-    benefits?: string[];
-    dataMigration?: string[];
-    topFeatures?: { title: string; description: string }[];
-}
+import { Product } from '@/types';
+import { handleCheckout } from '@/lib/checkout';
 
 interface ProductCardProps {
     product: Product;
@@ -169,27 +148,41 @@ export function ProductCard({ product, className }: ProductCardProps) {
                     "transition-all duration-300",
                     isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 )}>
-                    <Button
-                        className={cn(
-                            "w-full rounded-xl shadow-xl font-semibold gap-2",
-                            inCart
-                                ? "bg-green-600 hover:bg-green-700 text-white"
-                                : "bg-primary hover:bg-primary/90 text-primary-foreground"
-                        )}
-                        onClick={() => addToCart(product)}
-                    >
-                        {inCart ? (
-                            <>
-                                <Check className="h-4 w-4" />
-                                Added to Cart
-                            </>
-                        ) : (
-                            <>
-                                <ShoppingCart className="h-4 w-4" />
-                                Add to Cart
-                            </>
-                        )}
-                    </Button>
+                    <div className="flex gap-2">
+                        <Button
+                            variant="secondary"
+                            size="icon"
+                            className={cn(
+                                "flex-none w-12 rounded-xl shadow-xl font-semibold",
+                                inCart
+                                    ? "bg-green-100 hover:bg-green-200 text-green-700"
+                                    : "bg-white/90 hover:bg-white text-primary"
+                            )}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                addToCart(product);
+                            }}
+                        >
+                            {inCart ? (
+                                <Check className="h-5 w-5" />
+                            ) : (
+                                <ShoppingCart className="h-5 w-5" />
+                            )}
+                        </Button>
+                        <Button
+                            className={cn(
+                                "flex-1 rounded-xl shadow-xl font-semibold gap-2",
+                                "bg-primary hover:bg-primary/90 text-primary-foreground"
+                            )}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                handleCheckout(product);
+                            }}
+                        >
+                            <CreditCard className="h-4 w-4" />
+                            Buy Now
+                        </Button>
+                    </div>
                 </div>
             </div>
 

@@ -3,9 +3,12 @@
 import { Section } from '@/components/layout/Section';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Product } from '@/components/shop/ProductCard';
+
+import { Product } from '@/types';
 import { useCart } from '@/context/CartContext';
-import { ShoppingCart, Check, Star, Shield, Zap, Download, Lock, RefreshCw } from 'lucide-react';
+import { handleCheckout } from '@/lib/checkout';
+import { ShoppingCart, Check, Star, Shield, Zap, Download, Lock, RefreshCw, Minus, Plus, CreditCard } from 'lucide-react';
+import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
 interface ProductDetailClientProps {
@@ -13,8 +16,13 @@ interface ProductDetailClientProps {
 }
 
 export default function ProductDetailClient({ product }: ProductDetailClientProps) {
+
     const { addToCart, isInCart } = useCart();
     const inCart = isInCart(product.id);
+    const [quantity, setQuantity] = useState(1);
+
+    const incrementQuantity = () => setQuantity(prev => prev + 1);
+    const decrementQuantity = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
 
     const discountPercentage = product.originalPrice
         ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
@@ -138,23 +146,62 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                                     </span>
                                 )}
                             </div>
-                            <Button
-                                size="lg"
-                                className="w-full h-14 text-lg gap-2"
-                                onClick={() => addToCart(product)}
-                            >
-                                {inCart ? (
-                                    <>
-                                        <Check className="h-5 w-5" />
-                                        Added to Cart
-                                    </>
-                                ) : (
-                                    <>
-                                        <ShoppingCart className="h-5 w-5" />
-                                        Add to Cart
-                                    </>
-                                )}
-                            </Button>
+                            <div className="flex items-center gap-4 py-2">
+                                <span className="text-sm font-medium text-muted-foreground">Quantity:</span>
+                                <div className="flex items-center gap-1 bg-muted/50 rounded-lg p-1 border border-border/50">
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-8 w-8 rounded-md"
+                                        onClick={decrementQuantity}
+                                        disabled={quantity <= 1}
+                                    >
+                                        <Minus className="h-4 w-4" />
+                                    </Button>
+                                    <span className="w-12 text-center font-semibold">{quantity}</span>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-8 w-8 rounded-md"
+                                        onClick={incrementQuantity}
+                                    >
+                                        <Plus className="h-4 w-4" />
+                                    </Button>
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-3">
+                                <Button
+                                    size="lg"
+                                    className="w-full h-14 text-lg gap-2 bg-primary hover:bg-primary/90 text-primary-foreground shadow-xl shadow-primary/20"
+                                    onClick={() => handleCheckout(product, quantity)}
+                                >
+                                    <CreditCard className="h-5 w-5" />
+                                    Buy Now - ${(product.price * quantity).toLocaleString()}
+                                </Button>
+                                <Button
+                                    size="lg"
+                                    variant="secondary"
+                                    className={cn(
+                                        "w-full h-12 text-base gap-2",
+                                        inCart
+                                            ? "bg-green-100 hover:bg-green-200 text-green-700"
+                                            : "bg-white hover:bg-gray-50 border border-input"
+                                    )}
+                                    onClick={() => addToCart(product)}
+                                >
+                                    {inCart ? (
+                                        <>
+                                            <Check className="h-5 w-5" />
+                                            Added to Cart
+                                        </>
+                                    ) : (
+                                        <>
+                                            <ShoppingCart className="h-5 w-5" />
+                                            Add to Cart
+                                        </>
+                                    )}
+                                </Button>
+                            </div>
                             <p className="text-sm text-center text-muted-foreground">
                                 {product.inStock ? '✅ In Stock - Instant Delivery' : '❌ Out of Stock'}
                             </p>
