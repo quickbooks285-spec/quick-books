@@ -13,6 +13,7 @@ import { Minus, Plus, Trash2, ShoppingBag, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { handleCartCheckout } from '@/lib/checkout';
 
 export function CartDrawer() {
     const {
@@ -145,12 +146,16 @@ export function CartDrawer() {
                                     <span className="text-primary">${total.toFixed(2)}</span>
                                 </div>
                             </div>
-                            <Link href="/checkout" className="w-full" onClick={() => setIsCartOpen(false)}>
-                                <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-12 text-base gap-2 rounded-xl">
-                                    Proceed to Checkout
-                                    <ArrowRight className="h-4 w-4" />
-                                </Button>
-                            </Link>
+                            <Button
+                                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-12 text-base gap-2 rounded-xl"
+                                onClick={() => {
+                                    setIsCartOpen(false);
+                                    handleCartCheckout(items);
+                                }}
+                            >
+                                Proceed to Checkout
+                                <ArrowRight className="h-4 w-4" />
+                            </Button>
                             <Button
                                 variant="outline"
                                 className="w-full"
