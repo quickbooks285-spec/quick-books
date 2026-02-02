@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { BlogGrid } from "@/components/sections/BlogGrid";
 import { Section } from "@/components/layout/Section";
 import { Button } from "@/components/ui/button";
+import { JsonLd, BreadcrumbSchema } from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = {
     title: "Resource Center & Blog | QuickBooks",
@@ -66,26 +67,61 @@ export default function BlogPage() {
 
     const categories = ["All", "Tax Tips", "Business Management", "Technology", "Case Studies", "Compliance"];
 
+    const blogListSchema = {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "QuickBooks Resource Center",
+        "description": "Expert advice, tutorials, and insights to help your small business grow.",
+        "url": "https://thequickbook.com/blog",
+        "publisher": {
+            "@type": "Organization",
+            "name": "QuickBooks",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://thequickbook.com/icon.png"
+            }
+        },
+        "blogPost": posts.map((post) => ({
+            "@type": "BlogPosting",
+            "headline": post.title,
+            "description": post.excerpt,
+            "author": {
+                "@type": "Person",
+                "name": post.author
+            },
+            "datePublished": post.date
+        }))
+    };
+
     return (
-        <div className="pt-20">
-            <Section background="muted" className="pb-8">
-                <div className="text-center max-w-3xl mx-auto space-y-4">
-                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Resource Center</h1>
-                    <p className="text-xl text-muted-foreground">Expert advice, tutorials, and insights to help your business grow.</p>
-                </div>
-            </Section>
+        <>
+            <JsonLd data={blogListSchema} />
+            <BreadcrumbSchema
+                items={[
+                    { name: "Home", url: "https://thequickbook.com" },
+                    { name: "Blog", url: "https://thequickbook.com/blog" }
+                ]}
+            />
+            <div className="pt-20">
+                <Section background="muted" className="pb-8">
+                    <div className="text-center max-w-3xl mx-auto space-y-4">
+                        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Resource Center</h1>
+                        <p className="text-xl text-muted-foreground">Expert advice, tutorials, and insights to help your business grow.</p>
+                    </div>
+                </Section>
 
-            <Section background="white">
-                <div className="flex flex-wrap justify-center gap-2 mb-12">
-                    {categories.map((cat, i) => (
-                        <Button key={cat} variant={i === 0 ? "default" : "outline"} className="rounded-full">
-                            {cat}
-                        </Button>
-                    ))}
-                </div>
+                <Section background="white">
+                    <div className="flex flex-wrap justify-center gap-2 mb-12">
+                        {categories.map((cat, i) => (
+                            <Button key={cat} variant={i === 0 ? "default" : "outline"} className="rounded-full">
+                                {cat}
+                            </Button>
+                        ))}
+                    </div>
 
-                <BlogGrid posts={posts} />
-            </Section>
-        </div>
+                    <BlogGrid posts={posts} />
+                </Section>
+            </div>
+        </>
     );
 }

@@ -4,6 +4,7 @@ import { Team } from "@/components/sections/Team";
 import { Features } from "@/components/sections/Features";
 import { Section } from "@/components/layout/Section";
 import { Heart, Users, Target, Zap, Shield, Globe } from "lucide-react";
+import { OrganizationSchema, BreadcrumbSchema } from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = {
     title: "About Us | QuickBooks Company & Mission",
@@ -72,29 +73,38 @@ export default function AboutPage() {
     ];
 
     return (
-        <div className="pt-20">
-            <Section background="white" className="pb-8">
-                <div className="text-center max-w-3xl mx-auto space-y-4">
-                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight">About QuickBooks</h1>
-                    <p className="text-xl text-muted-foreground">Powering prosperity around the world.</p>
-                </div>
-            </Section>
-
-            <Mission />
-
-            <Features
-                title="Our Core Values"
-                subtitle="The principles that guide our culture and our work."
-                features={values}
-                columns={3}
+        <>
+            <OrganizationSchema />
+            <BreadcrumbSchema
+                items={[
+                    { name: "Home", url: "https://thequickbook.com" },
+                    { name: "About", url: "https://thequickbook.com/about" }
+                ]}
             />
+            <div className="pt-20">
+                <Section background="white" className="pb-8">
+                    <div className="text-center max-w-3xl mx-auto space-y-4">
+                        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">About QuickBooks</h1>
+                        <p className="text-xl text-muted-foreground">Powering prosperity around the world.</p>
+                    </div>
+                </Section>
 
-            <Team
-                title="Leadership Team"
-                subtitle="Meet the people guiding our mission effectively."
-                members={teamMembers}
-                background="brand"
-            />
-        </div>
+                <Mission />
+
+                <Features
+                    title="Our Core Values"
+                    subtitle="The principles that guide our culture and our work."
+                    features={values}
+                    columns={3}
+                />
+
+                <Team
+                    title="Leadership Team"
+                    subtitle="Meet the people guiding our mission effectively."
+                    members={teamMembers}
+                    background="brand"
+                />
+            </div>
+        </>
     );
 }

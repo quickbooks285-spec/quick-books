@@ -7,6 +7,7 @@ import { Section } from "@/components/layout/Section";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight, BarChart3, Clock, Globe, ShieldCheck, Zap, Smartphone } from "lucide-react";
+import { WebSiteSchema, OrganizationSchema } from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = {
   title: "QuickBooks | Smart Accounting Software for Small Business",
@@ -79,6 +80,8 @@ export default function Home() {
 
   return (
     <>
+      <WebSiteSchema />
+      <OrganizationSchema />
       <Hero />
 
       <ValueProps />

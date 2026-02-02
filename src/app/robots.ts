@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-    const baseUrl = 'https://quick-books-mu.vercel.app';
+    const baseUrl = 'https://thequickbook.com';
 
     return {
         rules: {
