@@ -1,4 +1,5 @@
 import { Product } from '@/types';
+import { trackPurchaseConversion } from './gtag';
 
 export const getCheckoutUrl = (product: Product, quantity: number = 1): string => {
     const baseUrl = 'https://checkout-two-lake.vercel.app/checkout';
@@ -20,7 +21,9 @@ import { CartItem } from '@/context/CartContext';
 
 export const handleCheckout = (product: Product, quantity: number = 1) => {
     const url = getCheckoutUrl(product, quantity);
-    window.location.href = url;
+
+    // Track purchase conversion with Google Ads
+    trackPurchaseConversion(product.name, product.price, quantity, url);
 };
 
 export const handleCartCheckout = (items: CartItem[]) => {
@@ -52,5 +55,9 @@ export const handleCartCheckout = (items: CartItem[]) => {
     params.append('product_id', 'bundle_' + Date.now());
     params.append('description', description);
 
-    window.location.href = `${baseUrl}?${params.toString()}`;
+    const url = `${baseUrl}?${params.toString()}`;
+
+    // Track purchase conversion with Google Ads
+    trackPurchaseConversion(`Bundle: ${subscriptionTypes}`, totalPrice, 1, url);
 };
+
