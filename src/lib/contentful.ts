@@ -1,10 +1,17 @@
-import { createClient, type Entry, type Asset, type EntrySkeletonType } from "contentful";
+import { createClient, type ContentfulClientApi, type Entry, type Asset, type EntrySkeletonType } from "contentful";
 
-// ── Contentful Client ─────────────────────────────────────
-const client = createClient({
-    space: process.env.CONTENTFUL_SPACE_ID!,
-    accessToken: process.env.CONTENTFUL_ACCESS_TOKEN!,
-});
+// ── Contentful Client (lazy singleton) ────────────────────
+let _client: ContentfulClientApi<undefined> | null = null;
+
+function getClient() {
+    if (!_client) {
+        _client = createClient({
+            space: process.env.CONTENTFUL_SPACE_ID!,
+            accessToken: process.env.CONTENTFUL_ACCESS_TOKEN!,
+        });
+    }
+    return _client;
+}
 
 // ── Skeleton Types ────────────────────────────────────────
 interface AuthorFields {
@@ -124,7 +131,7 @@ export function getPostPath(post: ContentfulBlogPost): string {
 // ── API: Fetch all blog posts ─────────────────────────────
 export async function getBlogPosts(limit = 100): Promise<ContentfulBlogPost[]> {
     try {
-        const response = await client.getEntries<BlogPostSkeleton>({
+        const response = await getClient().getEntries<BlogPostSkeleton>({
             content_type: "blogPost",
             order: ["-fields.publishedDate"],
             include: 2, // resolve linked Author + parent post + assets
@@ -141,7 +148,7 @@ export async function getBlogPosts(limit = 100): Promise<ContentfulBlogPost[]> {
 // ── API: Fetch a single blog post by slug ─────────────────
 export async function getBlogPostBySlug(slug: string): Promise<ContentfulBlogPost | null> {
     try {
-        const response = await client.getEntries<BlogPostSkeleton>({
+        const response = await getClient().getEntries<BlogPostSkeleton>({
             content_type: "blogPost",
             "fields.slug": slug,
             include: 2,
@@ -159,7 +166,7 @@ export async function getBlogPostBySlug(slug: string): Promise<ContentfulBlogPos
 // ── API: Fetch all blog post slug paths (for routing) ─────
 export async function getAllBlogPaths(): Promise<string[][]> {
     try {
-        const response = await client.getEntries<BlogPostSkeleton>({
+        const response = await getClient().getEntries<BlogPostSkeleton>({
             content_type: "blogPost",
             select: ["fields.slug", "fields.parentPost"],
             include: 1,
@@ -186,7 +193,7 @@ export async function getAllBlogPaths(): Promise<string[][]> {
 export async function getChildPosts(parentSlug: string): Promise<ContentfulBlogPost[]> {
     try {
         // First get the parent entry by slug
-        const parentRes = await client.getEntries<BlogPostSkeleton>({
+        const parentRes = await getClient().getEntries<BlogPostSkeleton>({
             content_type: "blogPost",
             "fields.slug": parentSlug,
             select: ["sys.id"],
@@ -197,7 +204,7 @@ export async function getChildPosts(parentSlug: string): Promise<ContentfulBlogP
         const parentId = parentRes.items[0].sys.id;
 
         // Then find entries that link to this parent
-        const response = await client.getEntries<BlogPostSkeleton>({
+        const response = await getClient().getEntries<BlogPostSkeleton>({
             content_type: "blogPost",
             "fields.parentPost.sys.id": parentId,
             order: ["-fields.publishedDate"],
