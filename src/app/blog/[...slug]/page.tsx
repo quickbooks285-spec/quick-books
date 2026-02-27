@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import { BLOCKS, INLINES, MARKS } from "@contentful/rich-text-types";
 import { Section } from "@/components/layout/Section";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -15,6 +13,7 @@ import {
     getPostPath,
 } from "@/lib/contentful";
 import { ArrowLeft, Calendar, Clock, User, Share2, ChevronRight } from "lucide-react";
+import { MarkdownRenderer } from "@/components/blog/MarkdownRenderer";
 
 // Force SSR — always fetch fresh data from Contentful on every request
 export const dynamic = "force-dynamic";
@@ -52,76 +51,6 @@ export async function generateMetadata({
         },
     };
 }
-
-// ── Rich text renderer options ────────────────────────────
-const richTextOptions = {
-    renderMark: {
-        [MARKS.BOLD]: (text: React.ReactNode) => <strong className="font-semibold">{text}</strong>,
-        [MARKS.ITALIC]: (text: React.ReactNode) => <em>{text}</em>,
-        [MARKS.CODE]: (text: React.ReactNode) => (
-            <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono">{text}</code>
-        ),
-    },
-    renderNode: {
-        [BLOCKS.HEADING_2]: (node: any, children: React.ReactNode) => (
-            <h2 className="text-2xl md:text-3xl font-bold mt-10 mb-4 tracking-tight">{children}</h2>
-        ),
-        [BLOCKS.HEADING_3]: (node: any, children: React.ReactNode) => (
-            <h3 className="text-xl md:text-2xl font-semibold mt-8 mb-3">{children}</h3>
-        ),
-        [BLOCKS.HEADING_4]: (node: any, children: React.ReactNode) => (
-            <h4 className="text-lg font-semibold mt-6 mb-2">{children}</h4>
-        ),
-        [BLOCKS.PARAGRAPH]: (node: any, children: React.ReactNode) => (
-            <p className="text-base md:text-lg leading-relaxed text-muted-foreground mb-6">{children}</p>
-        ),
-        [BLOCKS.UL_LIST]: (node: any, children: React.ReactNode) => (
-            <ul className="list-disc pl-6 space-y-2 mb-6 text-muted-foreground">{children}</ul>
-        ),
-        [BLOCKS.OL_LIST]: (node: any, children: React.ReactNode) => (
-            <ol className="list-decimal pl-6 space-y-2 mb-6 text-muted-foreground">{children}</ol>
-        ),
-        [BLOCKS.LIST_ITEM]: (node: any, children: React.ReactNode) => (
-            <li className="leading-relaxed">{children}</li>
-        ),
-        [BLOCKS.QUOTE]: (node: any, children: React.ReactNode) => (
-            <blockquote className="border-l-4 border-primary pl-6 py-2 my-6 italic text-muted-foreground bg-muted/30 rounded-r-lg">
-                {children}
-            </blockquote>
-        ),
-        [BLOCKS.HR]: () => <hr className="my-10 border-border/50" />,
-        [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
-            const { title, file } = node.data.target.fields;
-            if (!file?.url) return null;
-            return (
-                <figure className="my-8">
-                    <Image
-                        src={`https:${file.url}`}
-                        alt={title || "Blog image"}
-                        width={file.details?.image?.width || 800}
-                        height={file.details?.image?.height || 450}
-                        className="rounded-xl shadow-lg w-full"
-                    />
-                    {title && (
-                        <figcaption className="text-center text-sm text-muted-foreground mt-3">
-                            {title}
-                        </figcaption>
-                    )}
-                </figure>
-            );
-        },
-        [INLINES.HYPERLINK]: (node: any, children: React.ReactNode) => (
-            <a
-                href={node.data.uri}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:text-primary/80 underline underline-offset-4 decoration-primary/30 hover:decoration-primary transition-colors"
-            >
-                {children}
-            </a>
-        ),
-    },
-};
 
 // ── Page Component ────────────────────────────────────────
 export default async function BlogPostPage({
@@ -304,7 +233,11 @@ export default async function BlogPostPage({
                 {/* Post Body */}
                 <Section background="white">
                     <article className="max-w-3xl mx-auto prose-content">
-                        {post.body && documentToReactComponents(post.body, richTextOptions)}
+                        {post.body && typeof post.body === "string" ? (
+                            <MarkdownRenderer content={post.body} />
+                        ) : (
+                            <p className="text-muted-foreground">No content available.</p>
+                        )}
                     </article>
                 </Section>
 
