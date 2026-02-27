@@ -28,7 +28,7 @@ interface BlogPostFields {
     title: EntrySkeletonType["fields"];
     slug: EntrySkeletonType["fields"];
     excerpt: EntrySkeletonType["fields"];
-    body: EntrySkeletonType["fields"];
+    bodyMarkdown: EntrySkeletonType["fields"];
     featuredImage: EntrySkeletonType["fields"];
     author: EntrySkeletonType["fields"];
     publishedDate: EntrySkeletonType["fields"];
@@ -57,7 +57,7 @@ export interface ContentfulBlogPost {
     title: string;
     slug: string;
     excerpt: string;
-    body: any; // Rich text document
+    body: string; // Markdown content
     featuredImageUrl?: string;
     featuredImageAlt?: string;
     author: ContentfulAuthor;
@@ -106,7 +106,7 @@ function parseBlogPost(entry: Entry<BlogPostSkeleton>): ContentfulBlogPost {
         title: fields.title ?? "",
         slug: fields.slug ?? "",
         excerpt: fields.excerpt ?? "",
-        body: fields.body,
+        body: fields.bodyMarkdown ?? "",
         featuredImageUrl: parseAssetUrl(fields.featuredImage),
         featuredImageAlt: parseAssetAlt(fields.featuredImage),
         author: authorEntry ? parseAuthor(authorEntry) : { name: "Unknown", slug: "" },
