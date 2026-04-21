@@ -11,7 +11,6 @@ export function Footer() {
         Pages: [
             { name: 'Home', href: '/' },
             { name: 'Shop', href: '/shop' },
-            { name: 'Blog', href: '/blog' },
             { name: 'About Us', href: '/about' },
             { name: 'Contact us', href: '/contact' },
         ],
