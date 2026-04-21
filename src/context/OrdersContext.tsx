@@ -59,8 +59,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
     const fetchOrders = async () => {
         try {
             setIsLoading(true);
-            const { data, error } = await getSupabase()
-                .from('orders')
+            const { data, error } = await (getSupabase().from('orders') as any)
                 .select('*')
                 .order('created_at', { ascending: false });
 
@@ -130,8 +129,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
             payment_method: orderData.paymentMethod,
         };
 
-        const { data, error } = await getSupabase()
-            .from('orders')
+        const { data, error } = await (getSupabase().from('orders') as any)
             .insert([dbOrder])
             .select()
             .single();
@@ -171,8 +169,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
     };
 
     const updateOrderStatus = async (orderId: string, status: Order['status']) => {
-        const { data, error } = await getSupabase()
-            .from('orders')
+        const { data, error } = await (getSupabase().from('orders') as any)
             .update({ status })
             .eq('id', orderId)
             .select()

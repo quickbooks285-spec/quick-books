@@ -4,8 +4,7 @@ import { getSupabase } from '@/lib/supabase';
 // GET /api/orders - Fetch all orders
 export async function GET(request: NextRequest) {
     try {
-        const { data, error } = await getSupabase()
-            .from('orders')
+        const { data, error } = await (getSupabase().from('orders') as any)
             .select('*')
             .order('created_at', { ascending: false });
 
@@ -26,8 +25,7 @@ export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
 
-        const { data, error } = await getSupabase()
-            .from('orders')
+        const { data, error } = await (getSupabase().from('orders') as any)
             .insert([body])
             .select()
             .single();
