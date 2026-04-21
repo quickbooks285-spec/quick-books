@@ -1,26 +1,5 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-let _supabase: ReturnType<typeof createClient> | null = null;
-
-export function getSupabaseClient() {
-    if (!_supabase) {
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-        const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-        if (!supabaseUrl || !supabaseAnonKey) {
-            throw new Error('Supabase environment variables are not set.');
-        }
-        _supabase = createClient(supabaseUrl, supabaseAnonKey);
-    }
-    return _supabase;
-}
-
-export const supabase = new Proxy({} as ReturnType<typeof createClient>, {
-    get(_target, prop) {
-        return (getSupabaseClient() as any)[prop];
-    },
-});
-
-// Database types (auto-generated would be better, but this works for now)
 export interface Database {
     public: {
         Tables: {
@@ -37,7 +16,7 @@ export interface Database {
                     customer_state: string;
                     customer_zip: string;
                     customer_country: string;
-                    items: any; // JSONB
+                    items: any;
                     subtotal: number;
                     tax: number;
                     total: number;
@@ -92,3 +71,23 @@ export interface Database {
         };
     };
 }
+
+let _supabase: SupabaseClient<Database> | null = null;
+
+function getSupabaseClient(): SupabaseClient<Database> {
+    if (!_supabase) {
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+        if (!supabaseUrl || !supabaseAnonKey) {
+            throw new Error('Supabase environment variables are not set.');
+        }
+        _supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+    }
+    return _supabase;
+}
+
+export const supabase = new Proxy({} as SupabaseClient<Database>, {
+    get(_target, prop) {
+        return (getSupabaseClient() as any)[prop];
+    },
+});
