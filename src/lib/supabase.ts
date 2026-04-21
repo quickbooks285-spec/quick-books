@@ -1,4 +1,4 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 
 export interface Database {
     public: {
@@ -77,14 +77,14 @@ export interface Database {
     };
 }
 
-let _supabase: SupabaseClient<Database> | null = null;
+let _supabase: ReturnType<typeof createClient> | null = null;
 
-export function getSupabase(): SupabaseClient<Database> {
+export function getSupabase() {
     if (!_supabase) {
         const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
         const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
         if (!url || !key) throw new Error('Supabase environment variables are not set.');
-        _supabase = createClient<Database>(url, key);
+        _supabase = createClient(url, key);
     }
     return _supabase;
 }
