@@ -69,7 +69,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
             }
 
             // Transform database format to our Order interface
-            const transformedOrders: Order[] = (data || []).map((dbOrder) => ({
+            const transformedOrders: Order[] = (data || []).map((dbOrder: any) => ({
                 id: dbOrder.id,
                 orderNumber: dbOrder.order_number,
                 items: dbOrder.items,
