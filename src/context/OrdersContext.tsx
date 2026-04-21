@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { CartItem } from './CartContext';
-import { getSupabase } from '@/lib/getSupabase()';
+import { getSupabase } from '@/lib/supabase';
 
 export interface Order {
     id: string;
