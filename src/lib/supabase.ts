@@ -67,27 +67,24 @@ export interface Database {
                     created_at?: string;
                     updated_at?: string;
                 };
+                Relationships: [];
             };
         };
+        Views: Record<string, never>;
+        Functions: Record<string, never>;
+        Enums: Record<string, never>;
+        CompositeTypes: Record<string, never>;
     };
 }
 
 let _supabase: SupabaseClient<Database> | null = null;
 
-function getSupabaseClient(): SupabaseClient<Database> {
+export function getSupabase(): SupabaseClient<Database> {
     if (!_supabase) {
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-        const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-        if (!supabaseUrl || !supabaseAnonKey) {
-            throw new Error('Supabase environment variables are not set.');
-        }
-        _supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+        const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+        if (!url || !key) throw new Error('Supabase environment variables are not set.');
+        _supabase = createClient<Database>(url, key);
     }
     return _supabase;
 }
-
-export const supabase = new Proxy({} as SupabaseClient<Database>, {
-    get(_target, prop) {
-        return (getSupabaseClient() as any)[prop];
-    },
-});

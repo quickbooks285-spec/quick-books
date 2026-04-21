@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase, Database } from '@/lib/supabase';
-
-type OrderUpdate = Database['public']['Tables']['orders']['Update'];
+import { getSupabase } from '@/lib/supabase';
 
 // GET /api/orders/[id] - Fetch a single order
 export async function GET(
@@ -11,7 +9,7 @@ export async function GET(
     try {
         const { id } = await params;
 
-        const { data, error } = await supabase
+        const { data, error } = await getSupabase()
             .from('orders')
             .select('*')
             .eq('id', id)
@@ -40,9 +38,9 @@ export async function PATCH(
 ) {
     try {
         const { id } = await params;
-        const body = await request.json() as OrderUpdate;
+        const body = await request.json();
 
-        const { data, error } = await supabase
+        const { data, error } = await getSupabase()
             .from('orders')
             .update(body)
             .eq('id', id)

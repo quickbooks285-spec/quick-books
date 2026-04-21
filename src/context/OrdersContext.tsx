@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { CartItem } from './CartContext';
-import { supabase } from '@/lib/supabase';
+import { getSupabase } from '@/lib/getSupabase()';
 
 export interface Order {
     id: string;
@@ -59,7 +59,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
     const fetchOrders = async () => {
         try {
             setIsLoading(true);
-            const { data, error } = await supabase
+            const { data, error } = await getSupabase()
                 .from('orders')
                 .select('*')
                 .order('created_at', { ascending: false });
@@ -130,7 +130,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
             payment_method: orderData.paymentMethod,
         };
 
-        const { data, error } = await supabase
+        const { data, error } = await getSupabase()
             .from('orders')
             .insert([dbOrder])
             .select()
@@ -171,7 +171,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
     };
 
     const updateOrderStatus = async (orderId: string, status: Order['status']) => {
-        const { data, error } = await supabase
+        const { data, error } = await getSupabase()
             .from('orders')
             .update({ status })
             .eq('id', orderId)

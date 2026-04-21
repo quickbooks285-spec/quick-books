@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { getSupabase } from '@/lib/getSupabase()';
 
 // GET /api/orders - Fetch all orders
 export async function GET(request: NextRequest) {
     try {
-        const { data, error } = await supabase
+        const { data, error } = await getSupabase()
             .from('orders')
             .select('*')
             .order('created_at', { ascending: false });
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
 
-        const { data, error } = await supabase
+        const { data, error } = await getSupabase()
             .from('orders')
             .insert([body])
             .select()
